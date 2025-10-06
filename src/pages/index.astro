@@ -13,19 +13,18 @@ import Layout from "../layouts/Layout.astro";
   </section>
 
   <!-- PROJECTS (page-load TL -> TR -> BL -> BR) -->
+  <!-- PROJECTS -->
   <section class="mb-16" data-section="projects">
     <h2 class="text-2xl md:text-3xl font-bold mb-6">Projects</h2>
 
     <div class="grid gap-6 sm:grid-cols-2">
       <!-- Porpoise -->
-      <article
-        class="reveal card bg-base-200 shadow glow-wrap hover-pop"
-        data-anim-item data-glow data-tilt
-        style="--glow:#fb923c;"
-      >
+      <article class="reveal card bg-base-200 shadow glow-wrap hover-pop"
+              data-anim-item data-glow data-tilt
+              style="--glow:#fb923c;">
         <div class="card-body">
           <img
-            src="/images/project-porpoise.png"
+            src={import.meta.env.BASE_URL + "images/project-porpoise.png"}
             alt="Project Porpoise"
             class="h-12 max-h-12 w-auto mx-auto object-scale-down transition-transform hover:scale-110"
           />
@@ -34,18 +33,16 @@ import Layout from "../layouts/Layout.astro";
         </div>
       </article>
 
-      <!-- CMIL (white glow as requested) -->
-      <article
-        class="reveal card bg-base-200 shadow glow-wrap hover-pop"
-        data-anim-item data-glow data-tilt
-        style="--glow:#ffffff;"
-      >
+      <!-- CMIL -->
+      <article class="reveal card bg-base-200 shadow glow-wrap hover-pop"
+              data-anim-item data-glow data-tilt
+              style="--glow:#ffffff;">
         <div class="card-body">
           <h3 class="card-title">CMIL</h3>
           <p class="opacity-80">Bakery webapp for <em>Crust me it’s Love</em>.</p>
           <div class="mt-3 flex items-center gap-3">
             <img
-              src="/images/cmil.png"
+              src={import.meta.env.BASE_URL + "images/cmil.png"}
               alt="CMIL"
               class="h-12 max-h-12 w-auto object-scale-down rounded bg-base-100 p-1 transition-transform hover:scale-110"
             />
@@ -55,17 +52,15 @@ import Layout from "../layouts/Layout.astro";
       </article>
 
       <!-- Kibo -->
-      <article
-        class="reveal card bg-base-200 shadow glow-wrap hover-pop"
-        data-anim-item data-glow data-tilt
-        style="--glow:#60a5fa;"
-      >
+      <article class="reveal card bg-base-200 shadow glow-wrap hover-pop"
+              data-anim-item data-glow data-tilt
+              style="--glow:#60a5fa;">
         <div class="card-body">
           <h3 class="card-title">Kibo Africa</h3>
           <p class="opacity-80">WhatsApp chatbot automations for businesses.</p>
           <div class="mt-3 flex items-center gap-3">
             <img
-              src="/images/kibo.png"
+              src={import.meta.env.BASE_URL + "images/kibo.png"}
               alt="Kibo Africa"
               class="h-12 max-h-12 w-auto object-scale-down rounded bg-base-100 p-1 transition-transform hover:scale-110"
             />
@@ -75,17 +70,15 @@ import Layout from "../layouts/Layout.astro";
       </article>
 
       <!-- Solv -->
-      <article
-        class="reveal card bg-base-200 shadow glow-wrap hover-pop"
-        data-anim-item data-glow data-tilt
-        style="--glow:#34d399;"
-      >
+      <article class="reveal card bg-base-200 shadow glow-wrap hover-pop"
+              data-anim-item data-glow data-tilt
+              style="--glow:#34d399;">
         <div class="card-body">
           <h3 class="card-title">Solv. Africa</h3>
           <p class="opacity-80">Developer • automation & efficiency tools.</p>
           <div class="mt-3 flex items-center gap-3">
             <img
-              src="/images/solv.png"
+              src={import.meta.env.BASE_URL + "images/solv.png"}
               alt="Solv Africa"
               class="h-12 max-h-12 w-auto object-scale-down rounded bg-base-100 p-1 transition-transform hover:scale-110"
             />
@@ -96,212 +89,197 @@ import Layout from "../layouts/Layout.astro";
     </div>
   </section>
 
-  <!-- HACKERMAN TYPING WIDGET -->
-<section id="hackerman" class="mb-12">
-  <div class="hacker-wrap">
-    <div id="hackerTerminal" class="hacker-terminal" aria-live="polite" aria-atomic="false"></div>
-</section>
+    <!-- HACKERMAN TYPING WIDGET -->
+  <section id="hackerman" class="mb-12">
+    <div class="hacker-wrap">
+      <div id="hackerTerminal" class="hacker-terminal" aria-live="polite" aria-atomic="false"></div>
+  </section>
 
-<!-- Inline script controlling typing and scroll-lock -->
-<script is:inline>
-(function () {
-  const LINES = [
-    "initializing... modules: core, net, ui",
-    "code(and coffee)-fueled mode engaged",
-    "payload: stealth-deploy v0.9",
-    "debug: patching memory leaks",
-    "Autism to the core — build sequence active",
-    "hooking into websockets...",
-    "compiling... done",
-    "deploy: /prod -> success"
-  ];
+  <!-- Inline script controlling typing and scroll-lock -->
+  <script is:inline>
+  (function () {
+    const LINES = [
+      "initializing... modules: core, net, ui",
+      "code(and coffee)-fueled mode engaged",
+      "payload: stealth-deploy v0.9",
+      "debug: patching memory leaks",
+      "Autism to the core — build sequence active",
+      "hooking into websockets...",
+      "compiling... done",
+      "deploy: /prod -> success"
+    ];
 
-  const terminal = document.getElementById("hackerTerminal");
-  if (!terminal) return;
+    const terminal = document.getElementById("hackerTerminal");
+    if (!terminal) return;
 
-  let started = false;
-  let lineIdx = 0;
-  let charIdx = 0;
-  let timerId = null;
-  let caret = null;
+    let started = false;
+    let lineIdx = 0;
+    let charIdx = 0;
+    let timerId = null;
+    let caret = null;
 
-  function makeLine() {
-    const el = document.createElement("div");
-    el.className = "hacker-line visible";
-    const content = document.createElement("span");
-    content.className = "hacker-content";
-    el.appendChild(content);
-    return el;
-  }
-  function contentEl() {
-    const last = terminal.lastElementChild;
-    return last ? last.querySelector(".hacker-content") : null;
-  }
-  function ensureCaret(onEl) {
-    if (caret && caret.parentElement) caret.remove();
-    caret = document.createElement("span");
-    caret.className = "hacker-caret";
-    onEl.appendChild(caret);
-  }
-  function rmCaret() {
-    if (caret && caret.parentElement) caret.remove();
-    caret = null;
-  }
-  function clearTimer(){ if (timerId) { clearTimeout(timerId); timerId = null; } }
+    function makeLine() {
+      const el = document.createElement("div");
+      el.className = "hacker-line visible";
+      const content = document.createElement("span");
+      content.className = "hacker-content";
+      el.appendChild(content);
+      return el;
+    }
+    function contentEl() {
+      const last = terminal.lastElementChild;
+      return last ? last.querySelector(".hacker-content") : null;
+    }
+    function ensureCaret(onEl) {
+      if (caret && caret.parentElement) caret.remove();
+      caret = document.createElement("span");
+      caret.className = "hacker-caret";
+      onEl.appendChild(caret);
+    }
+    function rmCaret() {
+      if (caret && caret.parentElement) caret.remove();
+      caret = null;
+    }
+    function clearTimer(){ if (timerId) { clearTimeout(timerId); timerId = null; } }
 
-  function stepType() {
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    function stepType() {
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    if (lineIdx >= LINES.length) { rmCaret(); clearTimer(); return; }
+      if (lineIdx >= LINES.length) { rmCaret(); clearTimer(); return; }
 
-    // ✅ Always create a fresh line at the start of each block
-    if (charIdx === 0) {
-      const lineEl = makeLine();
-      terminal.appendChild(lineEl);
+      // ✅ Always create a fresh line at the start of each block
+      if (charIdx === 0) {
+        const lineEl = makeLine();
+        terminal.appendChild(lineEl);
+      }
+
+      const line = LINES[lineIdx];
+      const el = contentEl();
+
+      if (reduced) {
+        el.textContent = line;
+        lineIdx++; charIdx = 0;
+        timerId = setTimeout(stepType, 250);
+        return;
+      }
+
+      // type next char
+      const ch = line.charAt(charIdx++);
+      const span = document.createElement("span");
+      span.textContent = ch;
+      span.className = "hacker-pop";
+      el.appendChild(span);
+
+      ensureCaret(terminal.lastElementChild);
+      terminal.scrollTop = terminal.scrollHeight;
+
+      if (charIdx < line.length) {
+        const delay = 16 + Math.random() * 8; // ~16–24ms
+        timerId = setTimeout(stepType, delay);
+      } else {
+        // move to next line after a brief pause
+        charIdx = 0;
+        lineIdx++;
+        rmCaret();
+        timerId = setTimeout(stepType, 260);
+      }
     }
 
-    const line = LINES[lineIdx];
-    const el = contentEl();
-
-    if (reduced) {
-      el.textContent = line;
-      lineIdx++; charIdx = 0;
-      timerId = setTimeout(stepType, 250);
-      return;
+    function startTyping() {
+      if (started) return;
+      started = true;
+      stepType();
     }
 
-    // type next char
-    const ch = line.charAt(charIdx++);
-    const span = document.createElement("span");
-    span.textContent = ch;
-    span.className = "hacker-pop";
-    el.appendChild(span);
+    // Start when terminal first enters view, or first downward wheel over it.
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { startTyping(); io.disconnect(); }
+      });
+    }, { threshold: 0.35 });
+    io.observe(terminal);
 
-    ensureCaret(terminal.lastElementChild);
-    terminal.scrollTop = terminal.scrollHeight;
-
-    if (charIdx < line.length) {
-      const delay = 16 + Math.random() * 8; // ~16–24ms
-      timerId = setTimeout(stepType, delay);
-    } else {
-      // move to next line after a brief pause
-      charIdx = 0;
-      lineIdx++;
-      rmCaret();
-      timerId = setTimeout(stepType, 260);
+    function onWheel(e) {
+      const r = terminal.getBoundingClientRect();
+      const inWidget = e.clientY >= r.top && e.clientY <= r.bottom;
+      if (!started && inWidget && e.deltaY > 8) startTyping();
     }
-  }
-
-  function startTyping() {
-    if (started) return;
-    started = true;
-    stepType();
-  }
-
-  // Start when terminal first enters view, or first downward wheel over it.
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) { startTyping(); io.disconnect(); }
-    });
-  }, { threshold: 0.35 });
-  io.observe(terminal);
-
-  function onWheel(e) {
-    const r = terminal.getBoundingClientRect();
-    const inWidget = e.clientY >= r.top && e.clientY <= r.bottom;
-    if (!started && inWidget && e.deltaY > 8) startTyping();
-  }
-  window.addEventListener("wheel", onWheel, { passive: true });
-})();
-</script>
+    window.addEventListener("wheel", onWheel, { passive: true });
+  })();
+  </script>
 
 
 
 
-  <!-- WEB FRAMEWORKS (scroll: fade-down row-by-row) -->
+  <!-- WEB FRAMEWORKS -->
   <section class="mb-16" data-section="frameworks">
     <h2 class="text-2xl md:text-3xl font-bold mb-6">Web Frameworks</h2>
     <ul class="grid grid-cols-2 md:grid-cols-3 gap-5">
       <li class="reveal tile glow-wrap hover-pop" data-anim-item data-glow data-tilt style="--glow:#bc52ee;">
-        <img src="/images/astro.svg" alt="Astro"
-             class="h-14 max-h-14 w-auto mx-auto object-scale-down transition-transform hover:scale-110" />
+        <img src={import.meta.env.BASE_URL + "images/astro.svg"} alt="Astro" class="h-14 w-auto mx-auto object-scale-down transition-transform hover:scale-110" />
         <div class="mt-3 text-sm opacity-80">Astro</div>
       </li>
       <li class="reveal tile glow-wrap hover-pop" data-anim-item data-glow data-tilt style="--glow:#0f3d2e;">
-        <img src="/images/django.png" alt="Django"
-             class="h-14 max-h-14 w-auto mx-auto object-scale-down transition-transform hover:scale-110" />
+        <img src={import.meta.env.BASE_URL + "images/django.png"} alt="Django" class="h-14 w-auto mx-auto object-scale-down transition-transform hover:scale-110" />
         <div class="mt-3 text-sm opacity-80">Django</div>
       </li>
       <li class="reveal tile glow-wrap hover-pop" data-anim-item data-glow data-tilt style="--glow:#e5e7eb;">
-        <img src="/images/nextjs.svg" alt="Next.js"
-             class="h-14 max-h-14 w-auto mx-auto object-scale-down transition-transform hover:scale-110" />
+        <img src={import.meta.env.BASE_URL + "images/nextjs.svg"} alt="Next.js" class="h-14 w-auto mx-auto object-scale-down transition-transform hover:scale-110" />
         <div class="mt-3 text-sm opacity-80">Next.js</div>
       </li>
       <li class="reveal tile glow-wrap hover-pop" data-anim-item data-glow data-tilt style="--glow:#61dafb;">
-        <img src="/images/react.svg" alt="React"
-             class="h-14 max-h-14 w-auto mx-auto object-scale-down transition-transform hover:scale-110" />
+        <img src={import.meta.env.BASE_URL + "images/react.svg"} alt="React" class="h-14 w-auto mx-auto object-scale-down transition-transform hover:scale-110" />
         <div class="mt-3 text-sm opacity-80">React</div>
       </li>
       <li class="reveal tile glow-wrap hover-pop" data-anim-item data-glow data-tilt style="--glow:#cc0000;">
-        <img src="/images/rails.svg" alt="Rails"
-             class="h-14 max-h-14 w-auto mx-auto object-scale-down transition-transform hover:scale-110" />
+        <img src={import.meta.env.BASE_URL + "images/rails.svg"} alt="Rails" class="h-14 w-auto mx-auto object-scale-down transition-transform hover:scale-110" />
         <div class="mt-3 text-sm opacity-80">Rails</div>
       </li>
       <li class="reveal tile glow-wrap hover-pop" data-anim-item data-glow data-tilt style="--glow:#38bdf8;">
-        <img src="/images/tailwind.png" alt="Tailwind"
-             class="h-14 max-h-14 w-auto mx-auto object-scale-down transition-transform hover:scale-110" />
+        <img src={import.meta.env.BASE_URL + "images/tailwind.png"} alt="Tailwind" class="h-14 w-auto mx-auto object-scale-down transition-transform hover:scale-110" />
         <div class="mt-3 text-sm opacity-80">Tailwind</div>
       </li>
       <li class="reveal tile glow-wrap hover-pop" data-anim-item data-glow data-tilt style="--glow:#ff67d4;">
-        <img src="/images/daisyui.svg" alt="daisyUI"
-             class="h-14 max-h-14 w-auto mx-auto object-scale-down transition-transform hover:scale-110" />
+        <img src={import.meta.env.BASE_URL + "images/daisyui.svg"} alt="daisyUI" class="h-14 w-auto mx-auto object-scale-down transition-transform hover:scale-110" />
         <div class="mt-3 text-sm opacity-80">daisyUI</div>
       </li>
     </ul>
   </section>
 
-  <!-- SKILLS (scroll: fade-left row-by-row) -->
+  <!-- SKILLS -->
   <section class="mb-20" data-section="skills">
     <h2 class="text-2xl md:text-3xl font-bold mb-6">Programming & Technical Skills</h2>
     <ul class="grid grid-cols-2 md:grid-cols-3 gap-5">
       <li class="reveal tile glow-wrap hover-pop" data-anim-item data-glow data-tilt style="--glow:#f7df1e;">
-        <img src="/images/js.png" alt="JavaScript"
-             class="h-14 max-h-14 w-auto mx-auto object-scale-down transition-transform hover:scale-110" />
+        <img src={import.meta.env.BASE_URL + "images/js.png"} alt="JavaScript" class="h-14 w-auto mx-auto object-scale-down transition-transform hover:scale-110" />
         <div class="mt-3 text-sm opacity-80">JavaScript</div>
       </li>
       <li class="reveal tile glow-wrap hover-pop" data-anim-item data-glow data-tilt style="--glow:#3776ab;">
-        <img src="/images/python.svg" alt="Python"
-             class="h-14 max-h-14 w-auto mx-auto object-scale-down transition-transform hover:scale-110" />
+        <img src={import.meta.env.BASE_URL + "images/python.svg"} alt="Python" class="h-14 w-auto mx-auto object-scale-down transition-transform hover:scale-110" />
         <div class="mt-3 text-sm opacity-80">Python</div>
       </li>
       <li class="reveal tile glow-wrap hover-pop" data-anim-item data-glow data-tilt style="--glow:#cc342d;">
-        <img src="/images/ruby.svg" alt="Ruby"
-             class="h-14 max-h-14 w-auto mx-auto object-scale-down transition-transform hover:scale-110" />
+        <img src={import.meta.env.BASE_URL + "images/ruby.svg"} alt="Ruby" class="h-14 w-auto mx-auto object-scale-down transition-transform hover:scale-110" />
         <div class="mt-3 text-sm opacity-80">Ruby</div>
       </li>
       <li class="reveal tile glow-wrap hover-pop" data-anim-item data-glow data-tilt style="--glow:#5f9ea0;">
-        <img src="/images/htmx.png" alt="HTMX"
-             class="h-14 max-h-14 w-auto mx-auto object-scale-down transition-transform hover:scale-110" />
+        <img src={import.meta.env.BASE_URL + "images/htmx.png"} alt="HTMX" class="h-14 w-auto mx-auto object-scale-down transition-transform hover:scale-110" />
         <div class="mt-3 text-sm opacity-80">HTMX</div>
       </li>
       <li class="reveal tile glow-wrap hover-pop" data-anim-item data-glow data-tilt style="--glow:#ffffff;">
-        <img src="/images/linux.png" alt="Linux"
-             class="h-14 max-h-14 w-auto mx-auto object-scale-down transition-transform hover:scale-110" />
+        <img src={import.meta.env.BASE_URL + "images/linux.png"} alt="Linux" class="h-14 w-auto mx-auto object-scale-down transition-transform hover:scale-110" />
         <div class="mt-3 text-sm opacity-80">Linux</div>
       </li>
       <li class="reveal tile glow-wrap hover-pop" data-anim-item data-glow data-tilt style="--glow:#336791;">
-        <img src="/images/postgresql.png" alt="PostgreSQL"
-             class="h-14 max-h-14 w-auto mx-auto object-scale-down transition-transform hover:scale-110" />
+        <img src={import.meta.env.BASE_URL + "images/postgresql.png"} alt="PostgreSQL" class="h-14 w-auto mx-auto object-scale-down transition-transform hover:scale-110" />
         <div class="mt-3 text-sm opacity-80">PostgreSQL</div>
       </li>
       <li class="reveal tile glow-wrap hover-pop" data-anim-item data-glow data-tilt style="--glow:#00758f;">
-        <img src="/images/mysql.png" alt="MySQL"
-             class="h-14 max-h-14 w-auto mx-auto object-scale-down transition-transform hover:scale-110" />
+        <img src={import.meta.env.BASE_URL + "images/mysql.png"} alt="MySQL" class="h-14 w-auto mx-auto object-scale-down transition-transform hover:scale-110" />
         <div class="mt-3 text-sm opacity-80">MySQL</div>
       </li>
       <li class="reveal tile glow-wrap hover-pop" data-anim-item data-glow data-tilt style="--glow:#0074bd;">
-        <img src="/images/hadoop.svg" alt="Hadoop"
-             class="h-14 max-h-14 w-auto mx-auto object-scale-down transition-transform hover:scale-110" />
+        <img src={import.meta.env.BASE_URL + "images/hadoop.svg"} alt="Hadoop" class="h-14 w-auto mx-auto object-scale-down transition-transform hover:scale-110" />
         <div class="mt-3 text-sm opacity-80">Hadoop</div>
       </li>
     </ul>
