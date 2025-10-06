@@ -1,4 +1,4 @@
-name: Deploy static content to Pages
+name: Deploy Astro site to GitHub Pages
 
 on:
   push:
@@ -18,7 +18,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Node
@@ -27,8 +27,7 @@ jobs:
           node-version: 20
           cache: npm
 
-      # If you have a package-lock.json this will run `npm ci`; otherwise it falls back to install
-      - name: Install deps
+      - name: Install dependencies
         run: |
           if [ -f package-lock.json ]; then
             npm ci
@@ -36,11 +35,11 @@ jobs:
             npm install --no-audit --no-fund
           fi
 
-      - name: Build
+      - name: Build Astro site
         run: npm run build
 
-      - name: Upload artifact (dist)
-        uses: actions/upload-pages-artifact@v3
+      - name: Upload build output (dist)
+        uses: actions/upload-pages-artifact@v4
         with:
           path: ./dist
 
@@ -54,4 +53,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-
