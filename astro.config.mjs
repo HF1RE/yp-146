@@ -6,6 +6,6 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
-  site: "https://HF1RE.github.io/yp-146",
-  base: "yp-146",
+  site: "https://hf1re.github.io/yp-146",
+  base: "/yp-146/",
 });
