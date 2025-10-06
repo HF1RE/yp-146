@@ -1,0 +1,161 @@
+@import "tailwindcss";
+
+/* daisyUI v5 (Tailwind v4 CSS-first) */
+@plugin "daisyui" {
+  themes: halloween --default;
+  logs: false;
+}
+
+/* -------- Effects & Utilities -------- */
+@layer utilities {
+  /* Fade down */
+  @keyframes fd {
+    from { opacity: 0; transform: translateY(-12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  /* Fade left */
+  @keyframes fl {
+    from { opacity: 0; transform: translateX(-12px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  /* Hidden until activated */
+  .reveal { opacity: 0; will-change: transform, opacity; }
+
+  /* When .in is added, play the chosen animation (fd | fl) */
+  .reveal.in {
+    animation: var(--anim, fd) 700ms cubic-bezier(.22,.61,.36,1) both;
+    animation-delay: var(--d, 0ms);
+  }
+
+  /* Hover lift */
+  .hover-lift { transition: transform 250ms, box-shadow 250ms, background 250ms; }
+  .hover-lift:hover { transform: translateY(-6px) scale(1.03); }
+
+  /* Strong cursor-follow glow */
+  .glow-wrap { position: relative; overflow: hidden; }
+  .glow-wrap::after {
+    content: "";
+    position: absolute; inset: -60%;
+    pointer-events: none;
+    background: radial-gradient(
+      220px circle at var(--mx,50%) var(--my,50%),
+      color-mix(in oklab, var(--glow, #fb923c) 75%, transparent),
+      transparent 70%
+    );
+    opacity: 0; transition: opacity 300ms ease;
+  }
+  .glow-wrap:hover::after { opacity: .45; }
+
+  /* Docs-like tile card */
+  .tile { @apply bg-base-200 rounded-box border border-base-300 p-6 text-center; }
+
+  .hover-pop {
+    transition: transform 260ms ease, box-shadow 300ms ease;
+  }
+  .hover-pop:hover {
+    transform:
+      perspective(900px)
+      translateY(-6px)
+      scale(1.04)
+      rotateX(var(--rx, 0deg))
+      rotateY(var(--ry, 0deg));
+    box-shadow: 0 24px 60px rgba(0,0,0,.28);
+  }
+
+  /* Respect accessibility settings */
+  @media (prefers-reduced-motion: reduce) {
+    .hover-pop, .hover-pop:hover { transition: none; transform: none; }
+  }
+
+}
+
+
+/* HACKERMAN WIDGET */
+.hacker-wrap {
+  background: linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.5));
+  border-radius: 12px;
+  padding: 28px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
+  color: #9eff9e; /* neon green */
+  box-shadow: 0 8px 30px rgba(0,0,0,.45), 0 0 40px rgba(60,255,120,.03) inset;
+  overflow: hidden;
+}
+
+/* Terminal area */
+.hacker-terminal {
+  height: 320px;
+  max-height: 48vh;
+  min-height: 220px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+/* Each line */
+.hacker-line {
+  font-size: 0.95rem;
+  line-height: 1.25;
+  white-space: pre-wrap;
+  opacity: 0;
+  transform: translateY(-6px);
+}
+
+/* When a line is fully typed, it pops in */
+.hacker-line.visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 220ms ease, transform 220ms cubic-bezier(.22,.61,.36,1);
+}
+
+/* Typing caret */
+.hacker-caret {
+  display: inline-block;
+  width: 10px;
+  margin-left: 6px;
+  background: linear-gradient(90deg, #9eff9e 40%, rgba(158,255,158,0.2));
+  height: 1.1em;
+  vertical-align: text-bottom;
+  animation: blink 900ms steps(2) infinite;
+}
+@keyframes blink { 50% { opacity: 0 } }
+
+/* small caption / hint */
+.hacker-hint {
+  margin-top: 10px;
+  color: rgba(158,255,158,0.6);
+  font-size: 0.85rem;
+}
+
+/* reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .hacker-caret { animation: none; }
+  .hacker-line, .hacker-line.visible { transition: none; transform: none; opacity: 1; }
+}
+
+/* Slight pop/glow per typed character (very subtle) */
+@keyframes keyPop {
+  0%   { filter: brightness(1.2); opacity: .85; }
+  100% { filter: brightness(1);   opacity: 1;   }
+}
+.hacker-pop {
+  animation: keyPop 120ms ease;
+}
+
+/* tiny dim on backspace so deletion feels alive */
+@keyframes keyBack {
+  0% { filter: brightness(.9); opacity:.85; }
+  100% { filter: brightness(1); opacity:1; }
+}
+.hacker-back { animation: keyBack 120ms ease; }
+
+
+
+
+
+
+
+

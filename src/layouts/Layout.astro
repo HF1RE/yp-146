@@ -1,0 +1,92 @@
+---
+import "../assets/app.css";
+const { title = "HF1RE • Portfolio" } = Astro.props;
+---
+<html lang="en" data-theme="halloween">
+  <head>
+    <meta charset="utf-8" />
+    <title>{title}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body class="min-h-screen bg-base-100 text-base-content">
+    <!-- roomy desktop padding -->
+    <main class="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-20 xl:px-32 py-12">
+      <slot />
+    </main>
+
+    <!-- cursor glow driver -->
+    <script is:inline>
+      document.addEventListener("pointermove", (e) => {
+        document.querySelectorAll("[data-glow]").forEach((el) => {
+          const r = el.getBoundingClientRect();
+          const dx = (e.clientX - (r.left + r.width / 2)) / r.width;   // -0.5..0.5
+          const dy = (e.clientY - (r.top + r.height / 2)) / r.height;  // -0.5..0.5
+          el.style.setProperty("--mx", ((e.clientX - r.left) / r.width) * 100 + "%");
+          el.style.setProperty("--my", ((e.clientY - r.top) / r.height) * 100 + "%");
+          el.style.setProperty("--ry", (dx * 8) + "deg"); // yaw
+          el.style.setProperty("--rx", (-dy * 8) + "deg"); // pitch
+        });
+      });
+
+
+    </script>
+
+    <!-- animations: page-load for Projects; scroll-trigger for others -->
+    <script is:inline>
+      // Apply a simple stagger: 0ms, 150ms, 300ms, ...
+      function applyStagger(items, step = 150, start = 0) {
+        items.forEach((el, i) => el.style.setProperty("--d", (start + i * step) + "ms"));
+      }
+
+      // 1) Projects: page-load TL -> TR -> BL -> BR (DOM order in a 2-col grid)
+      document.addEventListener("DOMContentLoaded", () => {
+        const proj = document.querySelector('[data-section="projects"]');
+        if (proj) {
+          const cards = Array.from(proj.querySelectorAll("[data-anim-item]"));
+          // use fade-down for projects
+          cards.forEach((el) => el.style.setProperty("--anim", "fd"));
+          applyStagger(cards, 150, 0);
+          // trigger on load
+          requestAnimationFrame(() => cards.forEach((el) => el.classList.add("in")));
+        }
+      });
+
+      // 2) IntersectionObserver for other sections
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const section = entry.target;
+          const items = Array.from(section.querySelectorAll("[data-anim-item]"));
+
+          // Which animation? ("fd" = fade-down, "fl" = fade-left)
+          const anim = section.getAttribute("data-animate") || "fd";
+          items.forEach((el) => el.style.setProperty("--anim", anim));
+
+          // Row-wise stagger (DOM order == row order)
+          applyStagger(items, 120, 0);
+
+          // trigger
+          requestAnimationFrame(() => items.forEach((el) => el.classList.add("in")));
+
+          io.unobserve(section); // run once per section
+        });
+      }, { threshold: 0.15 });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const frameworks = document.querySelector('[data-section="frameworks"]');
+        if (frameworks) {
+          frameworks.setAttribute("data-animate", "fd"); // fade-down on scroll
+          io.observe(frameworks);
+        }
+        const skills = document.querySelector('[data-section="skills"]');
+        if (skills) {
+          skills.setAttribute("data-animate", "fl"); // fade-left on scroll
+          io.observe(skills);
+        }
+      });
+    </script>
+  </body>
+</html>
+
+
+
